@@ -1,0 +1,21 @@
+{
+    "name": "jakubzapletal/meetup-lottery",
+    "description": "Lottery for attendees from meetup.com",
+    "version": "0.0.1",
+    "autoload": {
+        "psr-0": { "": "src/"}
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "dms/meetup-api-client": "~1.0",
+        "symfony/yaml": "2.5.*@dev",
+        "symfony/http-foundation": "2.5.*@dev",
+        "twig/twig": "1.*"
+    },
+    "scripts": {
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,27 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <form method="POST">
+        <p>
+            <label for="event-id">Event ID:</label>
+            <input type="text" id="event-id" name="event_id" value="{{ event_id }}" disabled="disabled" />
+        </p>
+
+        <h2>Drawn members</h2>
+        <p>
+            <ol>
+                {% for draw_member in drawn_members %}
+                <li><h3>{{ draw_member.name }}</h3> <i>{{ draw_member.member_id }}</i></li>
+                {% endfor %}
+            </ol>
+        </p>
+
+        <p>
+            <button type="submit" name="draw">Execute</button>
+        </p>
+
+        <p>
+            <button type="submit" name="clear" value="">Clear</button>
+        </p>
+    </form>
+{% endblock %}

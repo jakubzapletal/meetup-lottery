@@ -1,0 +1,14 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <form method="POST">
+        <p>
+            <label for="event-id">Event ID:</label>
+            <input type="text" id="event-id" name="event_id" value="" />
+        </p>
+
+        <p>
+            <button type="submit" name="set_event">Set event</button>
+        </p>
+    </form>
+{% endblock %}
