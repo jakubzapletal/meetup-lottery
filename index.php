@@ -6,6 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use MeetupLottery\Draw;
+use MeetupLottery\Exporter\CSVExporter;
 
 // Init session
 $session = new Session();
@@ -35,7 +36,7 @@ if ($request->server->get('REQUEST_METHOD') == 'POST') {
 
         header('Location: ' . $request->server->get('REQUEST_URI'));
     } elseif ($request->request->has('export')) {
-        $draw->exportToCsv();
+        $draw->exportToCsv(new CSVExporter);
     } elseif ($request->request->has('set_event')) {
         $session->set('event_id', $request->request->get('event_id'));
 

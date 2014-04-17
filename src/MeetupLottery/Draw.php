@@ -5,6 +5,7 @@ namespace MeetupLottery;
 use DMS\Service\Meetup\Response\MultiResultResponse;
 use DMS\Service\Meetup\MeetupKeyAuthClient;
 use Symfony\Component\HttpFoundation\Session\Session;
+use MeetupLottery\Exporter\CSVExporter;
 
 class Draw
 {
@@ -199,21 +200,12 @@ class Draw
         return count($this->getMembers());
     }
 
-    public function exportToCsv()
+    /**
+     * @param CSVExporter $csvExporter
+     */
+    public function exportToCsv(CSVExporter $csvExporter)
     {
-        $handle = fopen('php://memory', 'w');
-
-        foreach ($this->getDrawnMembers() as $drawnMember) {
-            fputcsv($handle, $drawnMember);
-        }
-
-        header('Content-Description: File Transfer');
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="drawn_members_' . date('Y-m-d-H-i-s') . '.csv"');
-
-        rewind($handle);
-        fpassthru($handle);
-
-        exit;
+        $filename = 'drawn_members_' . date('Y-m-d-H-i-s') . '.csv';
+        $csvExporter->export($filename, $this->getDrawnMembers());
     }
 } 
