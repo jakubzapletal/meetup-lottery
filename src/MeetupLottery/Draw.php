@@ -97,7 +97,13 @@ class Draw
         $members = [];
 
         foreach ($response as $responseItem) {
-            $members[] = $responseItem['member'];
+            if ($responseItem['response'] === 'yes') {
+                $member = $responseItem['member'];
+                if (isset($responseItem['member_photo'])) {
+                    $member['photo'] = $responseItem['member_photo']['thumb_link'];
+                }
+                $members[] = $member;
+            }
         }
 
         return $members;
@@ -120,6 +126,10 @@ class Draw
      */
     public function getMembers()
     {
+        if ($this->eventId === null) {
+            return [];
+        }
+
         if ($this->members === null) {
             $this->members = $this->getMembersFromResponse($this->getResponse());
         }
@@ -181,4 +191,29 @@ class Draw
         return $this->drawnMembers;
     }
 
+    /**
+     * @return int
+     */
+    public function getCountRsvpedMembers()
+    {
+        return count($this->getMembers());
+    }
+
+    public function exportToCsv()
+    {
+        $handle = fopen('php://memory', 'w');
+
+        foreach ($this->getDrawnMembers() as $drawnMember) {
+            fputcsv($handle, $drawnMember);
+        }
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="drawn_members_' . date('Y-m-d-H-i-s') . '.csv"');
+
+        rewind($handle);
+        fpassthru($handle);
+
+        exit;
+    }
 } 

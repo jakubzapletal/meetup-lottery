@@ -22,6 +22,7 @@ $draw = new Draw($config, $session);
 
 // Get event ID
 $eventId = $session->get('event_id');
+$draw->setEventId($eventId);
 
 // Handle POST request
 if ($request->server->get('REQUEST_METHOD') == 'POST') {
@@ -30,10 +31,11 @@ if ($request->server->get('REQUEST_METHOD') == 'POST') {
 
         header('Location: ' . $request->server->get('REQUEST_URI'));
     } elseif ($request->request->has('draw')) {
-        $draw->setEventId($eventId);
         $draw->execute();
 
         header('Location: ' . $request->server->get('REQUEST_URI'));
+    } elseif ($request->request->has('export')) {
+        $draw->exportToCsv();
     } elseif ($request->request->has('set_event')) {
         $session->set('event_id', $request->request->get('event_id'));
 
@@ -43,6 +45,7 @@ if ($request->server->get('REQUEST_METHOD') == 'POST') {
 
 // Get drawn members
 $drawnMembers = $draw->getDrawnMembers();
+$countRsvpedMembers = $draw->getCountRsvpedMembers();
 
 // Set view
 $twigLoader = new \Twig_Loader_Filesystem(__DIR__ . '/views');
@@ -53,6 +56,7 @@ if ($eventId === null) {
 } else {
     echo $twig->render('draw.html.twig', [
         'event_id' => $eventId,
-        'drawn_members' => $drawnMembers
+        'drawn_members' => $drawnMembers,
+        'count_rsvped_members' => $countRsvpedMembers
     ]);
 }

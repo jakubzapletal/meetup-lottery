@@ -7,17 +7,38 @@
             <input type="text" id="event-id" name="event_id" value="{{ event_id }}" disabled="disabled" />
         </p>
 
+        <p>
+            <strong>Count RSVPed members:</strong> {{ count_rsvped_members }}
+        </p>
+
         <h2>Drawn members</h2>
         <p>
-            <ol>
+            <table>
                 {% for draw_member in drawn_members %}
-                <li><h3>{{ draw_member.name }}</h3> <i>{{ draw_member.member_id }}</i></li>
+                <tr>
+                    <td>
+                        {{ loop.index }}.
+                    </td>
+                    <td>
+                        {% if draw_member.photo is defined %}
+                            <img src="{{ draw_member.photo }}" />
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="font130 strong">{{ draw_member.name }}</span>
+                    </td>
+
+                    <td>
+                        <i>{{ draw_member.member_id }}</i>
+                    </td>
+                </tr>
                 {% endfor %}
-            </ol>
+            </table>
         </p>
 
         <p>
-            <button type="submit" name="draw">Execute</button>
+            <button type="submit" name="draw"><strong>Draw</strong></button>
+            <button type="submit" name="export">Export to CSV</button>
         </p>
 
         <p>
